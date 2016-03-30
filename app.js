@@ -19,20 +19,23 @@ io.sockets.on('connection', function(socket) {
 	
 	var user = { 'id': ids++ };
 
-	console.log(ids);
+	for (var u in users) {
+		socket.emit('new', users[u]);
+	}
 
 	socket.on('login', function(name) {
 		user.name = name;
-		users.push(user);
+		users[user.id] = user;
 		socket.emit('login', user);
+		io.sockets.emit('new', user);
 	});
 
 	socket.on('poke', function(poke) {
-		io.sockets.emit(poke);
+		io.sockets.emit('poke', poke);
 	});
 
 	socket.on('disconnect', function() {
-		socket.emit('quit', user.id)
+		io.sockets.emit('quit', user)
 		delete users[user.id];
 	});
 });
