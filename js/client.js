@@ -18,13 +18,13 @@ socket.on('new', function(user) {
 });
 
 socket.on('poke', function(poke) {
-	if(poke.id == me.id) {
+	if (poke.id == me.id) {
 		buildNotification(poke);
 	}
 });
 
 socket.on('quit', function(user) {
-	if(typeof user.name != 'undefined') {
+	if (typeof user.name != 'undefined') {
 		delete users[user.id];
 		var parent = document.getElementById('users')
 		var child = document.getElementById(user.id);
@@ -35,7 +35,7 @@ socket.on('quit', function(user) {
 document.getElementById('login-button').onclick = function (event) {
 	event.preventDefault();
 	var name = document.getElementById('login-name').value;
-	if(name != '') {
+	if (name != '') {
 		socket.emit('login', name);
 	}
 };
@@ -52,7 +52,7 @@ function poke(event) {
 	var id = event.srcElement.value;
 	var message = window.prompt('Enter your message here', '');
 	var poke;
-	if(message != null) {
+	if (message != null) {
 		poke = buildPoke(id, me.name + ' vous a envoyé un poke !', message);
 	} else {
 		poke = buildPoke(id, me.name + ' vous a envoyé un poke !', 'Vous venez d\'être poke');
@@ -98,7 +98,7 @@ function buildNotification(poke) {
   	}
   	else if (Notification.permission !== 'denied') {
     	Notification.requestPermission(function (permission) {
-     		if(!('permission' in Notification)) {
+     		if (!('permission' in Notification)) {
        			Notification.permission = permission;
       		}
       		if (permission === "granted") {
