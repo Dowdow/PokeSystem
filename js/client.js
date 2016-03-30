@@ -4,6 +4,8 @@ var socket = io.connect();
 var users = [];
 var me;
 
+buildNotification({ 'title': 'Bienvenue sur Banana Poke', 'message' : '' });
+
 socket.on('login', function(user) {
 	me = user;
 	document.getElementById('login').style.display ='none';
@@ -48,6 +50,14 @@ function fastpoke(event) {
 function poke(event) {
 	event.preventDefault();
 	var id = event.srcElement.value;
+	var message = window.prompt('Enter your message here', '');
+	var poke;
+	if(message != null) {
+		poke = buildPoke(id, me.name + ' vous a envoyé un poke !', message);
+	} else {
+		poke = buildPoke(id, me.name + ' vous a envoyé un poke !', 'Vous venez d\'être poke');
+	}
+	socket.emit('poke', poke);
 }
 
 function buildUser(user) {
