@@ -40,15 +40,24 @@ io.sockets.on('connection', function(socket) {
 			'user': 1
 		};
 		io.sockets.emit('newroom', rooms[crypto]);
-		console.log(rooms);
 	});
 
 	socket.on('joinroom', function(room) {
-
+		if(typeof rooms[room] != undefined) {
+			rooms[room].user++;
+			socket.emit('joinroom', rooms[room]);
+		} else {
+			socket.emit('error', 'This room does not exist');
+		}
 	});
 
 	socket.on('quitroom', function(room) {
-
+		if(typeof rooms[room] != undefined) {
+			rooms[room].user--;
+			socket.emit('quitroom', rooms[room]);
+		} else {
+			socket.emit('error', 'This room does not exist');
+		}
 	});
 
 	socket.on('poke', function(poke) {
@@ -56,7 +65,7 @@ io.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('disconnect', function() {
-		io.sockets.emit('quit', user)
+		io.sockets.emit('quituser', user)
 	});
 });
 

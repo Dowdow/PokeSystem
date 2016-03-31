@@ -22,19 +22,32 @@ socket.on('newuser', function(user) {
 	document.getElementById('users').appendChild(buildUser(user));
 });
 
+socket.on('joinroom', function(room) {
+	me.room = room;
+	document.getElementById('room').style.display ='none';
+	document.getElementById('app').style.display ='block';
+});
+
 socket.on('poke', function(poke) {
 	if (poke.id == me.id) {
 		buildNotification(poke);
 	}
 });
 
-socket.on('quit', function(user) {
+socket.on('quitroom', function(room) {
+	delete me.room;
+});
+
+socket.on('quituser', function(user) {
 	if (typeof user.name != 'undefined') {
-		delete users[user.id];
 		var parent = document.getElementById('users')
 		var child = document.getElementById(user.id);
 		parent.removeChild(child);
 	}
+});
+
+socket.on('error', function(message) {
+	buildNotification({ 'title': 'An error happens', 'message' : message })
 });
 
 document.getElementById('login-button').onclick = function (event) {
@@ -53,6 +66,12 @@ document.getElementById('room-create-button').onclick = function (event) {
 		socket.emit('createroom', { 'name': name, 'password': password });
 	}
 };
+
+function joinroom(event) {
+	event.preventDefault();
+	var id = event.srcElement.id;
+	socket.emit('joinroom', id);
+}
 
 function fastpoke(event) {
 	event.preventDefault();
@@ -79,6 +98,7 @@ function buildRoom(room) {
 	a.className = 'list-group-item';
 	a.innerHTML = room.name;
 	a.id = room.crypto;
+	a.onclick = joinroom;
 	var span = document.createElement('span');
 	span.className = 'badge';
 	span.innerHTML = room.user;
