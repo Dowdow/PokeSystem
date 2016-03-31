@@ -1,19 +1,24 @@
 document.getElementById('app').style.display ='none';
+document.getElementById('room').style.display ='none';
 
 var socket = io.connect();
-var users = [];
+var rooms = {};
 var me;
 
-buildNotification({ 'title': 'Bienvenue sur Banana Poke', 'message' : '' });
+buildNotification({ 'title': 'Welcome to Banana Poke', 'message' : '' });
 
 socket.on('login', function(user) {
 	me = user;
 	document.getElementById('login').style.display ='none';
-	document.getElementById('app').style.display ='block';
+	document.getElementById('room').style.display ='block';
+	document.getElementById('header-small').innerHTML = me.name;
 });
 
-socket.on('new', function(user) {
-	users[user.id] = user;
+socket.on('newroom', function(room) {
+	document.getElementById('room-list').appendChild(buildRoom(room));
+});
+
+socket.on('newuser', function(user) {
 	document.getElementById('users').appendChild(buildUser(user));
 });
 
@@ -40,10 +45,19 @@ document.getElementById('login-button').onclick = function (event) {
 	}
 };
 
+document.getElementById('room-create-button').onclick = function (event) {
+	event.preventDefault();
+	var name = document.getElementById('room-name').value;
+	var password = document.getElementById('room-password').value;
+	if (name != '') {
+		socket.emit('createroom', { 'name': name, 'password': password });
+	}
+};
+
 function fastpoke(event) {
 	event.preventDefault();
 	var id = event.srcElement.value;
-	var poke = buildPoke(id, me.name + ' vous a envoyé un poke !', 'Vous venez d\'être poke');
+	var poke = buildPoke(id, me.name + ' pokes you !', 'Poke received');
 	socket.emit('poke', poke);
 }
 
@@ -53,11 +67,23 @@ function poke(event) {
 	var message = window.prompt('Enter your message here', '');
 	var poke;
 	if (message != null) {
-		poke = buildPoke(id, me.name + ' vous a envoyé un poke !', message);
+		poke = buildPoke(id, me.name + ' pokes you !', message);
 	} else {
-		poke = buildPoke(id, me.name + ' vous a envoyé un poke !', 'Vous venez d\'être poke');
+		poke = buildPoke(id, me.name + ' pokes you !', 'Poke received');
 	}
 	socket.emit('poke', poke);
+}
+
+function buildRoom(room) {
+	var a = document.createElement('a');
+	a.className = 'list-group-item';
+	a.innerHTML = room.name;
+	a.id = room.crypto;
+	var span = document.createElement('span');
+	span.className = 'badge';
+	span.innerHTML = room.user;
+	a.appendChild(span);
+	return a;
 }
 
 function buildUser(user) {

@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var md5 = require("blueimp-md5");
 
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));
@@ -12,22 +13,42 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-var users = [];
+var rooms = {};
 var ids = 0;
 
 io.sockets.on('connection', function(socket) {
 	
 	var user = { 'id': ids++ };
 
-	for (var u in users) {
-		socket.emit('new', users[u]);
+	for (var r in rooms) {
+		if(rooms.hasOwnProperty(r)) {
+			socket.emit('newroom', rooms[r]);
+		}
 	}
 
 	socket.on('login', function(name) {
 		user.name = name;
-		users[user.id] = user;
 		socket.emit('login', user);
-		io.sockets.emit('new', user);
+	});
+
+	socket.on('createroom', function(room) {
+		var crypto = md5(room.name + Date.now());
+		rooms[crypto] = {
+			'name': room.name,
+			'crypto': crypto,
+			'password': room.password,
+			'user': 1
+		};
+		io.sockets.emit('newroom', rooms[crypto]);
+		console.log(rooms);
+	});
+
+	socket.on('joinroom', function(room) {
+
+	});
+
+	socket.on('quitroom', function(room) {
+
 	});
 
 	socket.on('poke', function(poke) {
@@ -36,7 +57,6 @@ io.sockets.on('connection', function(socket) {
 
 	socket.on('disconnect', function() {
 		io.sockets.emit('quit', user)
-		delete users[user.id];
 	});
 });
 
