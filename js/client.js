@@ -99,10 +99,10 @@ function buildRoom(room) {
 	a.innerHTML = room.name;
 	a.id = room.crypto;
 	a.onclick = joinroom;
-	var span = document.createElement('span');
+	/*var span = document.createElement('span');
 	span.className = 'badge';
 	span.innerHTML = room.user;
-	a.appendChild(span);
+	a.appendChild(span);*/
 	return a;
 }
 
