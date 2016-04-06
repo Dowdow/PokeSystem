@@ -18,8 +18,10 @@ socket.on('newroom', function(room) {
 	document.getElementById('room-list').appendChild(buildRoom(room));
 });
 
-socket.on('newuser', function(user) {
-	document.getElementById('users').appendChild(buildUser(user));
+socket.on('newuser', function(obj) {
+	if (typeof me.room !== 'undefined' && me.room.crypto === obj.room && me.id !== obj.user.id) {
+		document.getElementById('users').appendChild(buildUser(obj.user));
+	}
 });
 
 socket.on('joinroom', function(room) {
@@ -36,6 +38,8 @@ socket.on('poke', function(poke) {
 
 socket.on('quitroom', function(room) {
 	delete me.room;
+	document.getElementById('room').style.display ='block';
+	document.getElementById('app').style.display ='none';
 });
 
 socket.on('quituser', function(user) {

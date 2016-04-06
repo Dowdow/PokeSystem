@@ -39,25 +39,22 @@ io.sockets.on('connection', function(socket) {
 			'password': room.password,
 			'users': {}
 		};
-		rooms[crypto].users[user.id] = { 'user': user, 'socket': socket };
+		rooms[crypto].users[user.id] = user;
 		io.sockets.emit('newroom', { 'name': room.name, 'crypto': crypto });
 		socket.emit('joinroom', { 'name': room.name, 'crypto': crypto });
 	});
 
 	socket.on('joinroom', function(room) {
 		if(typeof rooms[room] != undefined) {
-			rooms[room].users[user.id] = socket;
+			rooms[room].users[user.id] = user;
 			socket.emit('joinroom', { 'name': rooms[room].name, 'crypto': rooms[room].crypto });
 			// On informe les utilisateurs déjà présents dans la salle qu'une personne entre
-			for (var u in rooms[room].users) {
-				if(rooms[room].users.hasOwnProperty(u)) {
-					rooms[room].users[u].socket.emit('newuser', user);
-				}
-			}
+			io.sockets.emit('newuser', { 'user': user, 'room': room });
+
 			// On communique à l'utilisateur qui rentre les occupants actuels
 			for (var u in rooms[room].users) {
 				if(rooms[room].users.hasOwnProperty(u)) {
-					socket.emit('newuser', rooms[room].users[u].user);
+					socket.emit('newuser', { 'user': rooms[room].users[u], 'room': room });
 				}
 			}
 		} else {
