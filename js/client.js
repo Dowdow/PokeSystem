@@ -1,5 +1,6 @@
 document.getElementById('app').style.display ='none';
 document.getElementById('room').style.display ='none';
+document.getElementById('leave-room').style.display = 'none';
 
 var socket = io.connect();
 var rooms = {};
@@ -28,6 +29,7 @@ socket.on('joinroom', function(room) {
 	me.room = room;
 	document.getElementById('room').style.display ='none';
 	document.getElementById('app').style.display ='block';
+	document.getElementById('leave-room').style.display = 'block';
 });
 
 socket.on('poke', function(poke) {
@@ -36,16 +38,18 @@ socket.on('poke', function(poke) {
 	}
 });
 
-socket.on('quitroom', function(room) {
-	delete me.room;
-	document.getElementById('room').style.display ='block';
-	document.getElementById('app').style.display ='none';
+socket.on('quituser', function(obj) {
+	if (typeof me.room != 'undefined' && me.room.crypto === obj.room) {
+		var parent = document.getElementById('users');
+		var child = document.getElementById(obj.user.id);
+		parent.removeChild(child);
+	}
 });
 
-socket.on('quituser', function(user) {
-	if (typeof user.name != 'undefined') {
-		var parent = document.getElementById('users')
-		var child = document.getElementById(user.id);
+socket.on('deleteroom', function(room) {
+	if (typeof room != 'undefined') {
+		var parent = document.getElementById('room-list');
+		var child = document.getElementById(room);
 		parent.removeChild(child);
 	}
 });
@@ -68,6 +72,19 @@ document.getElementById('room-create-button').onclick = function (event) {
 	var password = document.getElementById('room-password').value;
 	if (name != '') {
 		socket.emit('createroom', { 'name': name, 'password': password });
+	}
+};
+
+document.getElementById('leave-room').onclick = function (event) {
+	event.preventDefault();
+	socket.emit('quitroom', me.room.crypto);
+	delete me.room;
+	document.getElementById('room').style.display ='block';
+	document.getElementById('app').style.display ='none';
+	document.getElementById('leave-room').style.display = 'none';
+	var users = document.getElementById('users');
+	while (users.hasChildNodes()) {
+    	users.removeChild(users.lastChild);
 	}
 };
 
@@ -112,18 +129,21 @@ function buildRoom(room) {
 
 function buildUser(user) {
 	var div = document.createElement('div');
+	div.className = 'list-group-item';
 	div.id = user.id;
-	var p = document.createElement('p');
-	p.innerHTML = user.name;
+	var h4 = document.createElement('h4');
+	h4.innerHTML = user.name;
 	var button1 = document.createElement('button');
+	button1.className = 'btn btn-info';
 	button1.innerHTML = 'Fast Poke';
 	button1.value = user.id;
 	button1.onclick = fastpoke;
 	var button2 = document.createElement('button');
+	button2.className = 'btn btn-primary';
 	button2.innerHTML = 'Poke';
 	button2.value = user.id;
 	button2.onclick = poke;
-	div.appendChild(p);
+	div.appendChild(h4);
 	div.appendChild(button1);
 	div.appendChild(button2);
 	return div;

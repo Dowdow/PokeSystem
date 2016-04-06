@@ -19,6 +19,7 @@ var ids = 0;
 io.sockets.on('connection', function(socket) {
 	
 	var user = { 'id': ids++ };
+	var currentroom = '';
 
 	for (var r in rooms) {
 		if(rooms.hasOwnProperty(r)) {
@@ -40,6 +41,7 @@ io.sockets.on('connection', function(socket) {
 			'users': {}
 		};
 		rooms[crypto].users[user.id] = user;
+		currentroom = crypto;
 		io.sockets.emit('newroom', { 'name': room.name, 'crypto': crypto });
 		socket.emit('joinroom', { 'name': room.name, 'crypto': crypto });
 	});
@@ -47,6 +49,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('joinroom', function(room) {
 		if(typeof rooms[room] != undefined) {
 			rooms[room].users[user.id] = user;
+			currentroom = room;
 			socket.emit('joinroom', { 'name': rooms[room].name, 'crypto': rooms[room].crypto });
 			// On informe les utilisateurs déjà présents dans la salle qu'une personne entre
 			io.sockets.emit('newuser', { 'user': user, 'room': room });
@@ -65,7 +68,12 @@ io.sockets.on('connection', function(socket) {
 	socket.on('quitroom', function(room) {
 		if(typeof rooms[room] != undefined) {
 			delete rooms[room].users[user.id];
-			socket.emit('quitroom', { 'name': rooms[room].name, 'crypto': rooms[room].crypto });
+			currentroom = '';
+			io.sockets.emit('quituser', { 'user': user, 'room': room });
+			if (Object.keys(rooms[room].users).length < 1) {
+				io.sockets.emit('deleteroom', room);
+				delete rooms[room];
+			}
 		} else {
 			socket.emit('error', 'This room does not exist');
 		}
@@ -76,7 +84,10 @@ io.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('disconnect', function() {
-		io.sockets.emit('quituser', user)
+		if(currentroom != '') {
+			delete rooms[currentroom].users[user.id];
+			io.sockets.emit('quituser', { 'user': user, 'room': currentroom });
+		}
 	});
 });
 
