@@ -5,6 +5,7 @@ document.getElementById('leave-room').style.display = 'none';
 var socket = io.connect();
 var rooms = {};
 var me;
+var sound = document.getElementById('sound');
 
 buildNotification({ 'title': 'Welcome to Banana Poke', 'message' : '' });
 
@@ -164,6 +165,7 @@ function buildNotification(poke) {
   	}
   	else if (Notification.permission === "granted") {
     	var notification = new Notification(poke.title, { 'body': poke.message });
+    	playNotification();
     	setTimeout(notification.close.bind(notification), 5000); 
   	}
   	else if (Notification.permission !== 'denied') {
@@ -173,8 +175,16 @@ function buildNotification(poke) {
       		}
       		if (permission === "granted") {
         		var notification = new Notification(poke.title, { 'body': poke.message });
+        		playNotification();
         		setTimeout(notification.close.bind(notification), 5000); 
       		}
     	});
   	}
+}
+
+function playNotification() {
+	sound.pause();
+	sound.currentTime = 0;
+	sound.volume = 0.3;
+	sound.play();
 }

@@ -8,6 +8,7 @@ app.use('/css', express.static(__dirname + '/css'));
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/font', express.static(__dirname + '/font'));
 app.use('/img', express.static(__dirname + '/img'));
+app.use('/sound', express.static(__dirname + '/sound'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
