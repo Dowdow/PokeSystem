@@ -6,6 +6,7 @@ var socket = io.connect();
 var rooms = {};
 var me;
 var sound = document.getElementById('sound');
+sound.volume = 0.3;
 
 buildNotification({ 'title': 'Welcome to Banana Poke', 'message' : '' });
 
@@ -87,6 +88,10 @@ document.getElementById('leave-room').onclick = function (event) {
 	while (users.hasChildNodes()) {
     	users.removeChild(users.lastChild);
 	}
+};
+
+document.getElementById('volume').onchange = function (event) {
+	sound.volume = document.getElementById('volume').value / 10;
 };
 
 function joinroom(event) {
@@ -185,6 +190,5 @@ function buildNotification(poke) {
 function playNotification() {
 	sound.pause();
 	sound.currentTime = 0;
-	sound.volume = 0.3;
 	sound.play();
 }
