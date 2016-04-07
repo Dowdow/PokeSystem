@@ -29,14 +29,22 @@ socket.on('newuser', function(obj) {
 
 socket.on('joinroom', function(room) {
 	me.room = room;
+	document.getElementById('fast-poke-room').value = room.crypto;
+	document.getElementById('poke-room').value = room.crypto;
 	document.getElementById('room').style.display ='none';
 	document.getElementById('app').style.display ='block';
 	document.getElementById('leave-room').style.display = 'block';
 });
 
 socket.on('poke', function(poke) {
-	if (poke.id == me.id) {
-		buildNotification(poke);
+	if (poke.id == '') {
+		if (poke.room == me.room.crypto) {
+			buildNotification(poke);
+		}
+	} else {
+		if (poke.id == me.id) {
+			buildNotification(poke);
+		}
 	}
 });
 
@@ -94,6 +102,26 @@ document.getElementById('volume').onchange = function (event) {
 	sound.volume = document.getElementById('volume').value / 10;
 };
 
+document.getElementById('fast-poke-room').onclick = function (event) {
+	event.preventDefault();
+	var room = event.srcElement.value;
+	var poke = buildPoke('', room, me.name + ' pokes the room !', 'Room poke received');
+	socket.emit('poke', poke);
+};
+
+document.getElementById('poke-room').onclick = function (event) {
+	event.preventDefault();
+	var room = event.srcElement.value;
+	var message = window.prompt('Enter your message here', '');
+	var poke;
+	if (message != null) {
+		poke = buildPoke('', room, me.name + ' pokes the room !', message);
+	} else {
+		poke = buildPoke('', room, me.name + ' pokes the room !', 'Room poke received');
+	}
+	socket.emit('poke', poke);
+};
+
 function joinroom(event) {
 	event.preventDefault();
 	var id = event.srcElement.id;
@@ -103,7 +131,7 @@ function joinroom(event) {
 function fastpoke(event) {
 	event.preventDefault();
 	var id = event.srcElement.value;
-	var poke = buildPoke(id, me.name + ' pokes you !', 'Poke received');
+	var poke = buildPoke(id, '', me.name + ' pokes you !', 'Poke received');
 	socket.emit('poke', poke);
 }
 
@@ -113,9 +141,9 @@ function poke(event) {
 	var message = window.prompt('Enter your message here', '');
 	var poke;
 	if (message != null) {
-		poke = buildPoke(id, me.name + ' pokes you !', message);
+		poke = buildPoke(id, '', me.name + ' pokes you !', message);
 	} else {
-		poke = buildPoke(id, me.name + ' pokes you !', 'Poke received');
+		poke = buildPoke(id, '', me.name + ' pokes you !', 'Poke received');
 	}
 	socket.emit('poke', poke);
 }
@@ -155,13 +183,13 @@ function buildUser(user) {
 	return div;
 }
 
-function buildPoke(id, title, message) {
-	var poke = {
+function buildPoke(id, room, title, message) {
+	return {
 		'id': id,
+		'room': room,
 		'title': title,
 		'message': message 
 	};
-	return poke;
 }
 
 function buildNotification(poke) {
