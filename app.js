@@ -15,13 +15,12 @@ app.get('/', function (req, res) {
 });
 
 var rooms = {};
-var ids = 0;
 
 io.sockets.on('connection', function(socket) {
 	
-	var user = { 'id': ids++ };
+	var user = { };
 	var currentroom = '';
-
+	
 	for (var r in rooms) {
 		if(rooms.hasOwnProperty(r)) {
 			socket.emit('newroom', rooms[r]);
@@ -29,6 +28,7 @@ io.sockets.on('connection', function(socket) {
 	}
 
 	socket.on('login', function(name) {
+		user.id = md5(name + Date.now() + socket.request.connection.remoteAddress);
 		user.name = name;
 		socket.emit('login', user);
 	});
