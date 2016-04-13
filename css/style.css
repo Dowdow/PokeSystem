@@ -1,68 +1,84 @@
 @font-face {
-	font-family: Lobster;
-	src: url("/font/Lobster.otf") format("opentype");
+    font-family: Lobster;
+    src: url("/font/Lobster.otf") format("opentype");
 }
 
 @font-face {
-	font-family: Roboto;
-	src: url("/font/Roboto.ttf") format("ttf");
+    font-family: Roboto;
+    src: url("/font/Roboto.ttf") format("ttf");
 }
 
 body {
-	margin: 0;
-	font-family: Roboto;
+    margin: 0;
+    font-family: Roboto;
 }
 
 header {
-	font-family: Lobster;
-	text-align: center;
-	color: #222222;
+    font-family: Lobster;
+    text-align: center;
+    color: #222222;
 }
 
 header small {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 section {
-	width: 70%;
-	margin-left: auto;
-	margin-right: auto;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 section h3 {
-	font-family: Lobster;
-	font-weight: lighter;
-	text-align: center;
+    font-family: Lobster;
+    font-weight: lighter;
+    text-align: center;
 }
 
 section a {
-	font-family: Roboto;
+    font-family: Roboto;
 }
 
 footer {
-	position: fixed;
-	bottom: 0px;
-	width: 100%;
-	min-height: 100px;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    min-height: 100px;
 }
 
 form {
-	text-align: center;
+    text-align: center;
 }
 
 input[type="text"], input[type="password"] {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	border-radius: 5px;
-	border: 1px solid;
-	height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid;
+    height: 30px;
 }
 
 button {
-	background-color: #FFDC00;
-	border-radius: 5px;
-	border: 1px solid #FFDC00;
-	height: 30px;
-	min-width: 50px;
-	color: #111111;
+    background-color: #FFDC00;
+    border-radius: 5px;
+    border: 1px solid #FFDC00;
+    height: 30px;
+    min-width: 50px;
+    color: #111111;
+}
+
+.button-center {
+    width: 100%;
+    text-align: center;
+}
+
+.user {
+    width: 30%;
+    display: inline-block;
+}
+
+.user h4 {
+    font-family: Lobster;
+    font-size: medium;
+    font-weight: normal;
 }

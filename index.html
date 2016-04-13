@@ -1,46 +1,86 @@
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Banana Poke</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banana Poke</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<header>
-		<h1>Banana Poke <small id="header-small"></small></h1>
-		<button id="leave-room" type="button">Leave room</button>
-	</header>
+<header>
+    <h1>Banana Poke
+        <small id="header-small"></small>
+    </h1>
+    <button id="leave-room" type="button">Leave room</button>
+</header>
 
-	<section id="login">
-		<form>
-			<input id="login-name" type="text" placeholder="Name" />
-			<button id="login-button" type="submit">Go</button>
-		</form>
-	</section>
+<section id="login">
+    <form>
+        <input id="login-name" type="text" placeholder="Name"/>
+        <button id="login-button" type="submit">Go</button>
+    </form>
+</section>
 
-	<section id="room">
-		<h3>Rooms available</h3>
-		<div id="room-list"></div>
+<section id="room">
+    <h3>Rooms available</h3>
+    <div id="room-list"></div>
 
-		<h3>Create your own room</h3>
-		<form>
-		    <input type="text" id="room-name" placeholder="Name">
-		    <input type="password" id="room-password" placeholder="Password">
-		    <button id="room-create-button" type="submit">New Room</button>
-		</form>
-	</section>
+    <h3>Create your own room</h3>
+    <form>
+        <input type="text" id="room-name" placeholder="Name">
+        <input type="password" id="room-password" placeholder="Password">
+        <button id="room-create-button" type="submit">New Room</button>
+    </form>
+</section>
 
-	<section id="app">
-		<button id="fast-poke-room">Fast Poke Room</button>
-		<button id="poke-room">Poke Room</button>
-		<div id="users"></div>
-	</section>
+<section id="app">
+    <div class="button-center">
+        <button id="fast-poke-room">Fast Poke Room</button>
+        <button id="poke-room">Poke Room</button>
+    </div>
+    <div id="users">
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+        <div class="user">
+            <h4>User</h4>
+            <button>Fast Poke</button>
+            <button>Poke</button>
+        </div>
+    </div>
+</section>
 
-	<footer>
-		<input id="volume" style="width:20%;" type="range" value="3" max="10" min="0" step="1">
-		<audio id="sound" src="sound/notification.mp3" preload="auto"></audio>
-	</footer>
-	
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="js/client.js"></script>
+<footer>
+    <input id="volume" style="width:20%;" type="range" value="3" max="10" min="0" step="1">
+    <audio id="sound" src="sound/notification.mp3" preload="auto"></audio>
+</footer>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/client.js"></script>
 </body>
 </html>
