@@ -88,6 +88,10 @@ io.sockets.on('connection', function (socket) {
         if (currentroom !== '') {
             delete rooms[currentroom].users[user.id];
             io.sockets.emit('quituser', {'user': user, 'room': currentroom});
+            if (Object.keys(rooms[currentroom].users).length < 1) {
+                io.sockets.emit('deleteroom', currentroom);
+                delete rooms[currentroom];
+            }
         }
     });
 });

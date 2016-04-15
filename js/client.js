@@ -167,6 +167,7 @@ function buildUser(user) {
     div.id = user.id;
     var h4 = document.createElement('h4');
     h4.innerHTML = user.name;
+    var buttondiv = document.createElement('div');
     var button1 = document.createElement('button');
     button1.innerHTML = 'Fast Poke';
     button1.value = user.id;
@@ -176,8 +177,9 @@ function buildUser(user) {
     button2.value = user.id;
     button2.onclick = poke;
     div.appendChild(h4);
-    div.appendChild(button1);
-    div.appendChild(button2);
+    div.appendChild(buttondiv);
+    buttondiv.appendChild(button1);
+    buttondiv.appendChild(button2);
     return div;
 }
 
