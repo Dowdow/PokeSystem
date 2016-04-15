@@ -150,14 +150,9 @@ function poke(event) {
 
 function buildRoom(room) {
     var a = document.createElement('a');
-    a.className = 'list-group-item';
     a.innerHTML = room.name;
     a.id = room.crypto;
     a.onclick = joinroom;
-    /*var span = document.createElement('span');
-     span.className = 'badge';
-     span.innerHTML = room.user;
-     a.appendChild(span);*/
     return a;
 }
 
