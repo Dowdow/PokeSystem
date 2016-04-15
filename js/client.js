@@ -5,10 +5,11 @@ document.getElementById('leave-room').style.display = 'none';
 var socket = io.connect();
 var rooms = {};
 var me;
+var image = '/img/notifications/default.jpg';
 var sound = document.getElementById('sound');
 sound.volume = 0.3;
 
-buildNotification({'title': 'Welcome to Banana Poke', 'message': ''});
+buildNotification({'title': 'Welcome to Banana Poke', 'message': '', 'icon': image});
 
 socket.on('login', function (user) {
     me = user;
@@ -122,6 +123,15 @@ document.getElementById('poke-room').onclick = function (event) {
     socket.emit('poke', poke);
 };
 
+document.getElementById('image-select').onchange = function () {
+    image = '/img/notifications/' + document.getElementById('image-select').value;
+};
+
+document.getElementById('audio-select').onchange = function () {
+    sound.src = '/sound/' + document.getElementById('audio-select').value;
+    sound.load();
+};
+
 function joinroom(event) {
     event.preventDefault();
     var id = event.srcElement.id;
@@ -183,7 +193,8 @@ function buildPoke(id, room, title, message) {
         'id': id,
         'room': room,
         'title': title,
-        'message': message
+        'message': message,
+        'icon': image
     };
 }
 
@@ -192,7 +203,7 @@ function buildNotification(poke) {
         alert("Desktop notifications are not supported :(");
     }
     else if (Notification.permission === "granted") {
-        var notification = new Notification(poke.title, {'body': poke.message});
+        var notification = new Notification(poke.title, {'body': poke.message, 'icon': poke.icon});
         playNotification();
         setTimeout(notification.close.bind(notification), 5000);
     }
@@ -202,7 +213,7 @@ function buildNotification(poke) {
                 Notification.permission = permission;
             }
             if (permission === "granted") {
-                var notification = new Notification(poke.title, {'body': poke.message});
+                var notification = new Notification(poke.title, {'body': poke.message, 'icon': poke.icon});
                 playNotification();
                 setTimeout(notification.close.bind(notification), 5000);
             }

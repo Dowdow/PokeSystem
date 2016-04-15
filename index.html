@@ -21,14 +21,7 @@
 
 <section id="room">
     <h3>Rooms available</h3>
-    <div id="room-list">
-        <a>Room</a>
-        <a>Room</a>
-        <a>Room</a>
-        <a>Room</a>
-        <a>Room</a>
-        <a>Room</a>
-    </div>
+    <div id="room-list"></div>
 
     <h3>Create your own room</h3>
     <form>
@@ -47,8 +40,25 @@
 </section>
 
 <footer>
-    <input id="volume" style="width:20%;" type="range" value="3" max="10" min="0" step="1">
-    <audio id="sound" src="sound/notification.mp3" preload="auto"></audio>
+    <div class="volume">
+        <h4>Volume</h4>
+        <input id="volume" type="range" value="3" max="10" min="0" step="1">
+    </div>
+    <div class="image">
+        <h4>Notification image</h4>
+        <select id="image-select">
+            <option value="default.jpg">Default</option>
+            <option value="dwayne.jpg">Dwayne</option>
+        </select>
+    </div>
+    <div class="audio">
+        <h4>Notification sound</h4>
+        <select id="audio-select">
+            <option value="notification.mp3">Default</option>
+            <option value="notification2.mp3">Classic</option>
+        </select>
+        <audio id="sound" src="sound/notification.mp3" preload="auto"></audio>
+    </div>
 </footer>
 
 <script src="/socket.io/socket.io.js"></script>

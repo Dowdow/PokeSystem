@@ -43,7 +43,8 @@ footer {
     position: fixed;
     bottom: 0px;
     width: 100%;
-    min-height: 100px;
+    min-height: 150px;
+    border-top: 5px dashed #FFDC00;
 }
 
 form {
@@ -65,6 +66,11 @@ button {
     min-width: 50px;
     color: #111111;
     margin: 5px;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: none;
 }
 
 #leave-room {
@@ -106,4 +112,70 @@ button {
 .user div {
     width: 100%;
     text-align: center;
+}
+
+.volume {
+    float: left;
+    display: inline-block;
+    width: 35%;
+    text-align: center;
+}
+
+.volume h4 {
+    font-family: Lobster;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+.image {
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+}
+
+.image h4 {
+    font-family: Lobster;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.image select {
+    font-family: Lobster;
+    font-size: 18px;
+    background-color: #FFDC00;
+    border: none;
+    padding: 8px;
+    width: 50%;
+    text-align-last:center;
+}
+
+.image select:focus {
+    outline: none;
+}
+
+.audio {
+    display: inline-block;
+    width: 35%;
+    float: right;
+    text-align: center;
+}
+
+.audio h4 {
+    font-family: Lobster;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.audio select {
+    font-family: Lobster;
+    font-size: 18px;
+    background-color: #FFDC00;
+    border: none;
+    padding: 8px;
+    width: 50%;
+    text-align-last:center;
+}
+
+.audio select:focus {
+    outline: none;
 }
